@@ -2,6 +2,6 @@ from .views import RegistrationView
 from django.urls import path
 
 
-urlpattersn = [
+urlpatterns = [
     path('register', RegistrationView.as_view(), name="register")
 ]

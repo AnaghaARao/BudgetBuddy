@@ -11,14 +11,12 @@ class UsernameValidationView(View):
     def post(self, request):
         data = json.loads(request.body) # data containes everything sent by the user
         username = data['username']
-
+        # checking for alnum only username
         if not str(username).isalnum():
             return JsonResponse({'username_error':'username should only contain alpha-numeric characters'}, status=400)
-        
-    
+        # checking if username is already in use
         if User.objects.filter(username=username).exists():
             return JsonResponse({'username_error':'sorry! username in use, choose another'}, status=409)
-
         return JsonResponse({'username_valid': True})
 
     

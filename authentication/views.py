@@ -42,9 +42,18 @@ class RegistrationView(View):
         return render(request, 'authentication/register.html')
     
     def post(self, request):
-        messages.success(request,'Success')
-        messages.warning(request,'Warning')
-        messages.info(request,'Info')
-        messages.error(request,'Error')
+        # get user data
+        # validate
+        # create user account
+
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
         return render(request, 'authentication/register.html')
+
+        # messages.success(request,'Success')
+        # messages.warning(request,'Warning')
+        # messages.info(request,'Info')
+        # messages.error(request,'Error')
+        # return render(request, 'authentication/register.html')
     

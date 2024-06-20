@@ -32,7 +32,7 @@ usernameField.addEventListener("keyup", (e) => {
                 feedBackArea.style.display='block'; // to display incase username-error
                 feedBackArea.innerHTML = `<p>${data.username_error}<p>`;
             }else{
-                submitBtn.removeAttribute('diabled');
+                submitBtn.removeAttribute("disabled");
             }
         });
     } 
@@ -59,7 +59,7 @@ emailField.addEventListener("keyup", (e) => {
                 emailFeedBackArea.style.display = "block";
                 emailFeedBackArea.innerHTML = `<p>${data.email_error}<p>`;
             }else{
-                submitBtn.removeAttribute('disabled');
+                submitBtn.removeAttribute("disabled");
             }
         });
     }

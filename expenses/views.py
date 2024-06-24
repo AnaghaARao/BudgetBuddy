@@ -31,7 +31,7 @@ def add_expense(request):
     if request.method == 'POST':
         # import pdb
         # pdb.set_trace()
-        
+
         # validate amount input
         amount = request.POST['amount']
         # import pdb
@@ -60,4 +60,17 @@ def add_expense(request):
         
         messages.success(request, 'Expense saved successfully')
         return redirect('expenses')
+    
+def expense_edit(request, id):
+    expense = Expense.objects.get(pk=id)
+    context = {
+        'expense': expense,
+        'values': expense,
+    }
+
+    if request.method == 'GET':
+        return render(request, 'expenses/edit-expense.html', context)
+    else:
+        messages.info(request, 'Handling post form')
+        return render(request, 'expenses/edit-expense.html', context)
         

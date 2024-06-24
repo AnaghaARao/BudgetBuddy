@@ -17,10 +17,8 @@
 
     <div class="col-md-2">
       <a
-        href=""
-        class="btn btn-danger btn-sm"
-        >Delete</a
-      >
+        href="{% url 'expense-delete' expense.id %}"
+        class="btn btn-danger btn-sm">Delete</a>
     </div>
   </div>
 
@@ -49,7 +47,7 @@
         <div class="form-group">
           <label for="">Category</label>
           <select class="form-control" name="category">
-            <option selected name="category" value="{{values.category}}"></option>
+            <option selected name="category" value="{{values.category}}">
               {{values.category}}
             </option>
             {% for category in categories%}

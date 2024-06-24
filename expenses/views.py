@@ -62,15 +62,48 @@ def add_expense(request):
         return redirect('expenses')
     
 def expense_edit(request, id):
+    categories = Category.objects.all()
     expense = Expense.objects.get(pk=id)
     context = {
         'expense': expense,
         'values': expense,
+        'categories' : categories
     }
 
     if request.method == 'GET':
         return render(request, 'expenses/edit-expense.html', context)
-    else:
-        messages.info(request, 'Handling post form')
-        return render(request, 'expenses/edit-expense.html', context)
+    if request.method == 'POST':
+        # validate amount input
+        amount = request.POST['amount']
+        # import pdb
+        # pdb.set_trace()
+        if not amount:
+            messages.error(request, 'Amount is required')
+            return render(request, 'expenses/edit-expense.html', context)
+        
+        # validate description input
+        description = request.POST['description']
+        
+        if not description:
+            messages.error(request, 'Description is required')
+            return render(request, 'expenses/edit-expense.html', context)
+        
+        # category selection
+        category = request.POST['category']
+
+        # date input
+        date = request.POST['expense_date']
+
+        # owner input should also be passed
+
+        # Expense.objects.create(owner=request.user, amount=amount, date=date,
+        #                        category=category, description=description)
+        expense.owner=request.user
+        expense.amount=amount
+        expense.date=date
+        expense.category=category 
+        expense.description=description
+        expense.save()
+        messages.success(request, 'Expense updated successfully')
+        return redirect('expenses')
         

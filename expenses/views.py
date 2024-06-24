@@ -61,6 +61,8 @@ def add_expense(request):
         messages.success(request, 'Expense saved successfully')
         return redirect('expenses')
     
+@login_required(login_url='/authentication/login')
+@cache_control(no_cache=True, no_store=True, must_revalidate=True)
 def expense_edit(request, id):
     categories = Category.objects.all()
     expense = Expense.objects.get(pk=id)
@@ -106,4 +108,10 @@ def expense_edit(request, id):
         expense.save()
         messages.success(request, 'Expense updated successfully')
         return redirect('expenses')
+    
+def delete_expense(request, id):
+    expense = Expense.objects.get(pk=id)
+    expense.delete()
+    messages.success(request, 'Expense removed')
+    return redirect('expenses')
         

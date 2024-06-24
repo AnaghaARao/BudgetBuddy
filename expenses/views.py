@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_control
 from .models import Category, Expense
@@ -39,5 +39,17 @@ def add_expense(request):
             messages.error(request, 'Description is required')
             return render(request, 'expenses/add_expense.html', context)
         
+        # category selection
+        category = request.POST['category']
+
+        # date input
+        date = request.POST['expense_date']
+
+        # owner input should also be passed
+
+        Expense.objects.create(owner=request.user, amount=amount, date=date,
+                               category=category, description=description)
         
+        messages.success(request, 'Expense saved successfully')
+        return redirect('expenses')
         

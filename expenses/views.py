@@ -3,13 +3,19 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_control
 from .models import Category, Expense
 from django.contrib import messages
+from django.contrib.auth.models import User
 # Create your views here.
 
 @login_required(login_url='/authentication/login')
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
 def index(request):
     categories = Category.objects.all()
-    return render(request, 'expenses/index.html')
+    expenses = Expense.objects.filter(owner=request.user)
+
+    context = {
+        'expenses': expenses,
+    }
+    return render(request, 'expenses/index.html', context)
 
 @login_required(login_url='/authentication/login')
 @cache_control(no_cache=True, no_store=True, must_revalidate=True)
@@ -23,6 +29,9 @@ def add_expense(request):
         return render(request, 'expenses/add_expense.html', context)
 
     if request.method == 'POST':
+        # import pdb
+        # pdb.set_trace()
+        
         # validate amount input
         amount = request.POST['amount']
         # import pdb
@@ -33,8 +42,7 @@ def add_expense(request):
         
         # validate description input
         description = request.POST['description']
-        # import pdb
-        # pdb.set_trace()
+        
         if not description:
             messages.error(request, 'Description is required')
             return render(request, 'expenses/add_expense.html', context)

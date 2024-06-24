@@ -50,7 +50,7 @@
     </thead>
 
     <tbody>
-      {% for expense in page_obj%}
+      {% for expense in expenses%}
       <tr>
         <td>{{expense.amount}}</td>
         <td>{{expense.category}}</td>
@@ -59,7 +59,7 @@
 
         <td>
           <a
-            href="{% url 'expense-edit' expense.id  %}"
+            href=""
             class="btn btn-secondary btn-sm"
             >Edit</a
           >
@@ -96,7 +96,7 @@
 
 
 
-    <div class="pagination-container">
+    <!-- <div class="pagination-container">
     <div class="">
       Showing page {{page_obj.number}} of {{ page_obj.paginator.num_pages }}
     </div>
@@ -112,7 +112,7 @@
       {% endif %}
 
 
-      </ul>
+      </ul> -->
     {% endif %}
   </div>
 </div>

@@ -23,10 +23,21 @@ def add_expense(request):
         return render(request, 'expenses/add_expense.html', context)
 
     if request.method == 'POST':
+        # validate amount input
         amount = request.POST['amount']
         # import pdb
         # pdb.set_trace()
         if not amount:
             messages.error(request, 'Amount is required')
             return render(request, 'expenses/add_expense.html', context)
+        
+        # validate description input
+        description = request.POST['description']
+        # import pdb
+        # pdb.set_trace()
+        if not description:
+            messages.error(request, 'Description is required')
+            return render(request, 'expenses/add_expense.html', context)
+        
+        
         

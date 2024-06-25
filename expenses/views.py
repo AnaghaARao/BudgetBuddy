@@ -36,7 +36,7 @@ def index(request):
     context = {
         'expenses': expenses,
         'page_obj': page_obj,
-        'cuurency': currency,
+        'currency': currency,
     }
     return render(request, 'expenses/index.html', context)
 

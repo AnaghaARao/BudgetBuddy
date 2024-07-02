@@ -19,14 +19,14 @@ def index(request):
 
     exists = UserPreference.objects.filter(user=request.user).exists()
     user_preferences = None
+
     if exists:
         user_preferences = UserPreference.objects.get(user=request.user)
+
     if request.method == 'GET':
-
         return render(request, 'preferences/index.html', {'currencies': currency_data,
-                                                          'user_preferences': user_preferences})
+                                                       'user_preferences': user_preferences})
     else:
-
         currency = request.POST['currency']
         if exists:
             user_preferences.currency = currency

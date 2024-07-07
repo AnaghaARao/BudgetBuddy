@@ -10,6 +10,7 @@ from django.http import JsonResponse, HttpResponse
 from userpreferences.models import UserPreference
 import datetime
 import csv
+import xlwt
 # from django.contrib.auth.models import UserPreference
 # Create your views here.
 
@@ -139,7 +140,9 @@ def expense_edit(request, id):
         expense.save()
         messages.success(request, 'Expense updated successfully')
         return redirect('expenses')
-    
+
+@login_required(login_url='/authentication/login')
+@cache_control(no_cache=True, no_store=True, must_revalidate=True)
 def delete_expense(request, id):
     expense = Expense.objects.get(pk=id)
     expense.delete()
@@ -189,3 +192,33 @@ def export_csv(request):
                          expense.description, expense.category])
         
     return response
+
+def export_excel(request):
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition']='attachment; filename=Expenses'+\
+        str(datetime.datetime.now())+'.xls'
+    wb = xlwt.Workbook(encoding='utf-8') # workbook
+    ws = wb.add_sheet('Expenses') #worksheet
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    font_style.font.bold = True # font style only for headers
+
+    columns = ['Data','Amount','Description','Category']
+
+    for col_num in range(len(columns)):
+        ws.write(row_num, col_num, columns[col_num], font_style)
+
+    font_style = xlwt.XFStyle() #resetting font style
+    rows = Expense.objects.filter(owner=request.user).values_list('date','amount','description','category' ) # dynamic rows
+
+    for row in rows:
+        row_num+=1
+
+        for col_num in range(len(row)):
+            ws.write(row_num, col_num, str(row[col_num]), font_style) 
+            # conerting 3rd parameter to str to avoid possible rendering issues
+
+    wb.save(response)
+
+    return response
+
